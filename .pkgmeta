@@ -1,0 +1,8 @@
+ignore:
+  - .github
+  - .gitignore
+  - .release
+  - dist
+  - docs
+  - package.sh
+  - RELEASING.md
