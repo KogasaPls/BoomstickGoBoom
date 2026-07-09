@@ -19,11 +19,11 @@ Boomstick Go Boom is a small World of Warcraft addon for Survival Hunters. It pl
 
 ## Packaging And Releases
 
-This repo includes a GitHub Actions workflow that packages every push and publishes tagged releases to CurseForge with the BigWigs WoW packager.
+This repo includes GitHub Actions workflows that package every push and publish releases to CurseForge with the BigWigs WoW packager.
 
 1. Add the repository secret `CF_API_TOKEN` with a CurseForge API token from the project owner account.
-2. Push a tag like `v1.0.0`.
-3. GitHub Actions will build the addon and upload it to CurseForge project `1603116`.
+2. Bump `## Version` in `BoomstickGoBoom.toc` and push the change to `main`.
+3. GitHub Actions will create the matching tag, build the addon, and upload it to CurseForge project `1603116`.
 
 See [RELEASING.md](RELEASING.md) for the exact release flow.
 

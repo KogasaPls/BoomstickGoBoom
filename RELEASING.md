@@ -11,13 +11,15 @@
 1. Update addon code and metadata on `main`.
 2. Bump `## Version:` in `BoomstickGoBoom.toc`.
 3. Commit and push `main`.
-4. Create and push a tag that matches the addon version, for example `v1.0.0`.
-5. Wait for the `Package and Publish` workflow to finish.
+4. Wait for the `Create Tag and Publish` workflow to create the matching tag and upload the release.
 
-The workflow packages branch and pull request builds in dry-run mode, then publishes tagged builds to CurseForge.
+The package workflow validates branch and pull request builds in dry-run mode.
+Manual tags are still supported, but the tag must exactly match the `.toc`
+version or publishing will fail.
 
 ## Notes
 
 - The workflow reads the CurseForge project ID from `BoomstickGoBoom.toc`.
+- Release tags are immutable; bump the `.toc` version instead of moving an existing tag.
 - Untagged builds are validation-only and do not upload anywhere.
 - The local `package.sh` script is still available for manual packaging.

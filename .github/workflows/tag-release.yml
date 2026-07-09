@@ -1,0 +1,54 @@
+name: Create Tag and Publish
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - BoomstickGoBoom.toc
+
+permissions:
+  contents: write
+
+jobs:
+  tag-and-publish:
+    name: Tag and publish TOC version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7.0.0
+        with:
+          fetch-depth: 0
+
+      - name: Read addon version
+        id: version
+        run: |
+          version="$(scripts/addon-version.sh read BoomstickGoBoom.toc)"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "tag=v${version}" >> "$GITHUB_OUTPUT"
+
+      - name: Create release tag
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          existing_commit="$(git rev-list -n 1 "$TAG" 2>/dev/null || true)"
+
+          if [[ -n "$existing_commit" ]]; then
+            if [[ "$existing_commit" != "$GITHUB_SHA" ]]; then
+              echo "error: $TAG already points to $existing_commit" >&2
+              exit 1
+            fi
+
+            echo "$TAG already points to $GITHUB_SHA"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag --annotate "$TAG" --message "Release $TAG"
+          git push origin "refs/tags/$TAG"
+
+      - name: Publish to CurseForge
+        uses: BigWigsMods/packager@v2
+        env:
+          CF_API_KEY: ${{ secrets.CF_API_TOKEN }}
