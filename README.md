@@ -2,13 +2,6 @@
 
 Boomstick Go Boom is a small World of Warcraft addon for Survival Hunters. It plays four timed "tick" sounds while you channel Boomstick so the cadence is easier to follow without staring at the cast bar.
 
-## Features
-
-- Only runs on Hunters, and only enables the cast tracking while you're in Survival.
-- Plays the first tick immediately and schedules the remaining ticks off the live channel timing.
-- Lets you choose the playback channel with `/bgb channel Master|SFX|Ambience|Music|Dialog`.
-- Includes `/bgb test` so you can verify timing and volume without entering combat.
-
 ## Installation
 
 1. Download the latest packaged zip from CurseForge, or build one locally with `./package.sh`.
