@@ -9,7 +9,7 @@ A World of Warcraft addon that plays the cat that go "boom" sound when you hit b
 
 ## Preview
 
-[Video preview](docs/media/boomcat2.mp4)
+https://github.com/user-attachments/assets/c25d3891-5221-4916-a969-a75c30fc8917
 
 ## Licensing
 
