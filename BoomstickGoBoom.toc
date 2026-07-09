@@ -2,7 +2,7 @@
 ## Title: Boomstick Go Boom
 ## Notes: Plays synchronized tick sounds while a Survival Hunter channels Boomstick.
 ## Author: KogasaPls
-## Version: 1.0.7
+## Version: 1.0.8
 ## X-Curse-Project-ID: 1603116
 ## SavedVariables: BoomstickGoBoomDB
 
