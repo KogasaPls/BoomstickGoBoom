@@ -1,8 +1,9 @@
 ## Interface: 120007, 120100
 ## Title: Boomstick Go Boom
-## Notes: Plays tick sounds when casting Boomstick.
-## Author: You
-## Version: 1.0
+## Notes: Plays synchronized tick sounds while a Survival Hunter channels Boomstick.
+## Author: KogasaPls
+## Version: 1.0.0
+## X-Curse-Project-ID: 1603116
 ## SavedVariables: BoomstickGoBoomDB
 
 BoomstickGoBoom.lua
