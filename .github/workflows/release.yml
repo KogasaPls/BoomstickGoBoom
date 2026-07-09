@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 0
 
       - name: Validate tag against addon version
-        run: scripts/addon-version.sh check-tag BoomstickGoBoom.toc "$GITHUB_REF_NAME"
+        run: scripts/addon-version.sh check-tag BoomstickGoBoom.toc ${{ github.event.workflow_run.head_sha }}
 
       - name: Publish tagged release
         uses: BigWigsMods/packager@v2
