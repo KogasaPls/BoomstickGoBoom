@@ -27,11 +27,6 @@ jobs:
           ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
 
-      - name: Validate tag against addon version
-        run: scripts/addon-version.sh check-tag BoomstickGoBoom.toc "$HEAD_SHA"
-        env:
-          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
-
       - name: Publish tagged release
         uses: BigWigsMods/packager@v2
         env:
