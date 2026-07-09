@@ -1,4 +1,4 @@
-name: Create Tag and Publish
+name: Create Release Tag
 
 on:
   push:
@@ -11,8 +11,7 @@ permissions:
   contents: write
 
 jobs:
-  tag-and-publish:
-    name: Tag and publish TOC version
+  create-tag:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -47,8 +46,3 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag --annotate "$TAG" --message "Release $TAG"
           git push origin "refs/tags/$TAG"
-
-      - name: Publish to CurseForge
-        uses: BigWigsMods/packager@v2
-        env:
-          CF_API_KEY: ${{ secrets.CF_API_TOKEN }}
