@@ -57,13 +57,7 @@ local function getSoundChannel()
 end
 
 local function getCurrentSpecIndex()
-    if C_SpecializationInfo and C_SpecializationInfo.GetSpecialization then
-        return C_SpecializationInfo.GetSpecialization()
-    end
-
-    if GetSpecialization then
-        return GetSpecialization()
-    end
+    return C_SpecializationInfo.GetSpecialization()
 end
 
 local function isSurvivalHunter()
@@ -107,7 +101,7 @@ end
 local function scheduleRemainingTicks(token)
     local startTimeMs, endTimeMs = getBoomstickChannel()
     if not startTimeMs then
-        return false
+        return
     end
 
     expectedEndMs = endTimeMs
@@ -117,15 +111,15 @@ local function scheduleRemainingTicks(token)
 
     for i = 2, NUM_TICKS do
         local tickIndex = i
-        local tickTimeMs = startTimeMs + durationMs * TICK_FRACTIONS[tickIndex]
-        local delay = math.max(0, (tickTimeMs - nowMs) / 1000)
+        if not playedTick[tickIndex] then
+            local tickTimeMs = startTimeMs + durationMs * TICK_FRACTIONS[tickIndex]
+            local delay = math.max(0, (tickTimeMs - nowMs) / 1000)
 
-        C_Timer.After(delay, function()
-            playTick(token, tickIndex, true)
-        end)
+            C_Timer.After(delay, function()
+                playTick(token, tickIndex, true)
+            end)
+        end
     end
-
-    return true
 end
 
 local function resetCastState()
@@ -144,18 +138,20 @@ local function startBoomstick(castGUID)
     -- Tick 1 is immediate.
     playTick(token, 1, false)
 
-    -- Prefer immediate timing; retry next frame only if channel timing is not ready yet.
-    if not scheduleRemainingTicks(token) then
-        C_Timer.After(0, function()
-            if token == activeToken then
-                scheduleRemainingTicks(token)
-            end
-        end)
-    end
+    scheduleRemainingTicks(token)
 end
 
-local function stopBoomstick(castGUID, spellID, interrupted)
-    if spellID ~= SPELL_ID and castGUID ~= activeCastGUID then
+local function updateBoomstick(castGUID)
+    if castGUID ~= activeCastGUID then
+        return
+    end
+
+    activeToken = activeToken + 1
+    scheduleRemainingTicks(activeToken)
+end
+
+local function stopBoomstick(castGUID, interrupted)
+    if castGUID ~= activeCastGUID then
         return
     end
 
@@ -181,10 +177,12 @@ local function setRuntimeEnabled(shouldEnable)
 
     if enabled then
         f:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START")
+        f:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE")
         f:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
         f:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED")
     else
         f:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_START")
+        f:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE")
         f:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
         f:UnregisterEvent("UNIT_SPELLCAST_INTERRUPTED")
         resetCastState()
@@ -273,19 +271,24 @@ f:SetScript("OnEvent", function(_, event, unit, castGUID, spellID)
     end
 
     if event == "UNIT_SPELLCAST_CHANNEL_START" then
-        if spellID == SPELL_ID or currentChannelIsBoomstick() then
+        if spellID == SPELL_ID then
             startBoomstick(castGUID)
         end
 
         return
     end
 
+    if event == "UNIT_SPELLCAST_CHANNEL_UPDATE" then
+        updateBoomstick(castGUID)
+        return
+    end
+
     if event == "UNIT_SPELLCAST_CHANNEL_STOP" then
-        stopBoomstick(castGUID, spellID, false)
+        stopBoomstick(castGUID, false)
         return
     end
 
     if event == "UNIT_SPELLCAST_INTERRUPTED" then
-        stopBoomstick(castGUID, spellID, true)
+        stopBoomstick(castGUID, true)
     end
 end)
