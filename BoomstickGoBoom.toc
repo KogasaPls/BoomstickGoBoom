@@ -1,4 +1,4 @@
-## Interface: 120000
+## Interface: 120007, 120100
 ## Title: Boomstick Go Boom
 ## Notes: Plays tick sounds when casting Boomstick.
 ## Author: You
