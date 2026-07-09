@@ -1,0 +1,8 @@
+## Interface: 120000
+## Title: Boomstick Go Boom
+## Notes: Plays tick sounds when casting Boomstick.
+## Author: You
+## Version: 1.0
+## SavedVariables: BoomstickGoBoomDB
+
+BoomstickGoBoom.lua
