@@ -26,7 +26,7 @@ local TICK_FRACTIONS = {
     1,
 }
 
-local FINAL_TICK_GRACE_MS = 80
+local FINAL_TICK_GRACE_MS = 200
 
 -- Cheap no-op for non-Hunters.
 local _, classFile = UnitClass("player")
