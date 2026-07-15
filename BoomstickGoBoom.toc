@@ -1,8 +1,8 @@
 ## Interface: 120007, 120100
 ## Title: Boomstick Go Boom
-## Notes: Plays synchronized tick sounds while a Survival Hunter channels Boomstick.
+## Notes: Plays cat that go boom when you press boomstick
 ## Author: KogasaPls
-## Version: 1.0.11
+## Version: 1.1.1
 ## X-Curse-Project-ID: 1603116
 ## SavedVariables: BoomstickGoBoomDB
 
